@@ -9,16 +9,21 @@ namespace trip_manager.Data.Services
     public class TripService : ITripService
     {
         //private TripDbContext _tripContext;
-       
+
+        TripsDbContext _context;
+        public TripService(TripsDbContext context)
+        {
+            _context = context;
+        }
 
         public List<Trip> GetAllTrips()
         {
-            return Data.Trips.ToList();
+            return _context.Trips.ToList();
         }
 
         public Trip GetTrip(int tripId)
         {
-            var _trip = Data.Trips.FirstOrDefault(n => n.Id == tripId);
+            var _trip = _context.Trips.FirstOrDefault(n => n.Id == tripId);
             if (_trip != null)
             {
                 return _trip;
@@ -38,11 +43,11 @@ namespace trip_manager.Data.Services
                     DateCompleted = trip.DateCompleted,
                     Username = "username1"
                 };
-                Data.Trips.Add(_trip);
+                _context.Trips.Add(_trip);
+                _context.SaveChanges();
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -50,17 +55,25 @@ namespace trip_manager.Data.Services
         public void DeleteTrip(int tripId)
         {
             var trip = Data.Trips.FirstOrDefault(n => n.Id == tripId);
-            Data.Trips.Remove(trip);
+            _context.Trips.Remove(trip);
+            _context.SaveChanges();
         }    
 
         public void UpdateTrip(int tripId, Trip trip)
         {
-            var _trip = Data.Trips.FirstOrDefault(n => n.Id == tripId);
-            _trip.Id = trip.Id;
-            _trip.Name = trip.Name;
-            _trip.Description = trip.Description;
-            _trip.DateStarted = trip.DateStarted;
-            _trip.DateCompleted = trip.DateCompleted;
+            var _trip = _context.Trips.FirstOrDefault(n => n.Id == tripId);
+            if(_trip != null)
+            {
+                _trip.Name = trip.Name;
+                _trip.Description = trip.Description;
+                _trip.DateStarted = trip.DateStarted;
+                _trip.DateCompleted = trip.DateCompleted;
+
+                _context.Update(_trip);
+                _context.SaveChanges();
+            }
+
+            
         }
     }
 }

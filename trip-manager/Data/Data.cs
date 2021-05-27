@@ -23,7 +23,8 @@ namespace trip_manager.Data
         {
             Id=2,
             Name="Carpinteria, CA, USA",
-            Description="Carpinteria is a city located on the central coast of California, just south of Santa Barbara. It has many beautiful beaches as well as a popular Avocado Festival which takes place every year in October...",
+            Description="Carpinteria is a city located on the central coast of California, just south of Santa Barbara. " +
+            "It has many beautiful beaches as well as a popular Avocado Festival which takes place every year in October...",
             DateStarted = new DateTime(2019,02,22),
             DateCompleted = new DateTime(2019,01,30)
         },

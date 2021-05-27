@@ -51,8 +51,8 @@ export class Trip extends Component {
                         <tr key={trip.id}>
                             <td>{trip.name}</td>
                             <td>{trip.description}</td>
-                            <td>{trip.dateStarted}</td>
-                            <td>{trip.dateCompleted}</td>
+                            <td>{trip.dateStarted ? new Date(trip.dateStarted).toISOString().slice(0,10) : '-'}</td>
+                            <td>{trip.dateCompleted ? new Date(trip.dateCompleted).toISOString().slice(0,10) : '-'}</td>
                             <td>
                                 <div className="form-group">
                                     <button onClick={() => this.onTripUpdate(trip.id)} className="btn btn-success">Update</button>

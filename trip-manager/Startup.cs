@@ -2,9 +2,11 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using trip_manager.Data.Models;
 using trip_manager.Data.Services;
 
 namespace trip_manager
@@ -14,9 +16,11 @@ namespace trip_manager
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            ConnectionString = configuration.GetConnectionString("DefaultConnectionString");
         }
 
         public IConfiguration Configuration { get; }
+        public string ConnectionString { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -30,7 +34,11 @@ namespace trip_manager
                 configuration.RootPath = "ClientApp/build";
             });
 
+            services.AddDbContext<TripsDbContext>(options => 
+                    options.UseSqlServer(ConnectionString));
             services.AddTransient<ITripService, TripService>();
+            services.AddTransient<TripsDbContext>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
